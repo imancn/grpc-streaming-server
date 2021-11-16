@@ -1,0 +1,33 @@
+syntax = "proto2";
+option java_multiple_files = true;
+package ir.imancn.grpc;
+
+service Service {
+
+    /// Unary
+    rpc save(Packet) returns (Packet);
+
+    /// Client Side Streaming
+    rpc saveAll(stream Packet) returns (Packet);
+
+    /// Server Side Streaming
+    rpc getByRpcType(Packet) returns (stream Packet);
+
+    /// Bidirectional Streaming
+    rpc getAll(stream Packet) returns (stream Packet);
+}
+
+/// @Todo split all input and output of rpc methods models
+message Packet {
+    optional int64 id = 1;
+    optional int64 timestamp = 2;
+    optional RpcType rpcType = 3;
+    required string value = 4;
+}
+
+enum RpcType {
+    UNARY = 0;
+    S2C_STREAMING = 1;
+    C2S_STREAMING = 2;
+    BIDIRECTIONAL_STREAMING = 3;
+}
